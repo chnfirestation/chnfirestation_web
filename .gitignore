@@ -1,21 +1,22 @@
+# Environment variables
+.env
+
 # Python
-venv/
-.venv/
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
 env/
-.env
+venv/
+.venv/
 
 # Django
+*.log
+local_settings.py
 db.sqlite3
+staticfiles/
 media/
-
-# Node
-node_modules/
-npm-debug.log*
 
 # IDE
 .vscode/
