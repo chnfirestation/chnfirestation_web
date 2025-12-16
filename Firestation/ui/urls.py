@@ -1,5 +1,8 @@
 from django.urls import path
 from . import views
+from django.views.decorators.cache import never_cache
+
+
 
 urlpatterns = [
     path('', views.home, name='index'),

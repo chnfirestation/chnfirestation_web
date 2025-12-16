@@ -9,6 +9,22 @@ from .models import admindetails
 from .models import firewater
 from .models import generalIncident
 from .models import AssistanceCall  
+from django.views.decorators.cache import never_cache
+
+# somewhere in views.py or a separate utils.py
+from functools import wraps
+from django.shortcuts import redirect
+
+def session_required(login_url_name):
+    def decorator(view_func):
+        @wraps(view_func)
+        def _wrapped_view(request, *args, **kwargs):
+            if 'username' not in request.session:
+                return redirect(login_url_name)
+            return view_func(request, *args, **kwargs)
+        return _wrapped_view
+    return decorator
+
 
 def home(request):
     return render(request, 'index.html')
@@ -69,7 +85,8 @@ def admin_login(request):
 
 
 
-
+@never_cache
+@session_required('user_login')
 def userdashboard(request):
     if 'username' not in request.session:
         return redirect('user_login')
@@ -111,13 +128,15 @@ def userdashboard(request):
 
 
 
-
+@never_cache
+@session_required('user_login')
 def reportcase(request):
     return render(request, 'reportcase.html')
 
 
 
-
+@never_cache
+@session_required('admin_login')
 def admindashboard(request):
     if 'username' not in request.session:
         return redirect('admin_login')
@@ -161,37 +180,62 @@ def admindashboard(request):
 
 
 
-
+@never_cache
+@session_required('admin_login')
 def adminreportcase(request):
     return render(request, 'adminreportcase.html')
 
 
+@never_cache
+@session_required('user_login')
 def fireform(request):
     return render(request, 'fireform.html')
 
+
+@never_cache
+@session_required('admin_login')
 def adminfireform(request):
     return render(request, 'adminfireform.html')
 
+
+@never_cache
+@session_required('user_login')
 def waterform(request):
     return render(request, 'waterform.html')
 
+
+@never_cache
+@session_required('admin_login')
 def adminwaterform(request):
     return render(request, 'adminwaterform.html')
 
+
+@never_cache
+@session_required('user_login')
 def generalincidentform(request):
     return render(request, 'generalincidentform.html')
 
+
+@never_cache
+@session_required('admin_login')
 def admingeneralincidentform(request):
     return render(request, 'admingeneralincidentform.html')
 
+
+@never_cache
+@session_required('user_login')
 def assistcalls(request):
     return render(request, 'assistcalls.html')
 
+
+@never_cache
+@session_required('admin_login')
 def adminassistcalls(request):
     return render(request, 'adminassistcalls.html')
 
 
-
+@never_cache
+@session_required('user_login')
 def firewater_report(request):
     if request.method == 'POST':
         data = request.POST
@@ -252,6 +296,9 @@ def firewater_report(request):
     messages.error(request, 'Please correct the errors below.')
     return render(request, 'reportcase.html')  # Render your form template
 
+
+@never_cache
+@session_required('admin_login')
 def adminfirewater_report(request):
     if request.method == 'POST':
         data = request.POST
@@ -313,6 +360,9 @@ def adminfirewater_report(request):
     return render(request, 'adminreportcase.html')  # Render your form template
 
 
+
+@never_cache
+@session_required('user_login')
 def generalincident_report(request):
     if request.method == 'POST':
         data = request.POST
@@ -371,6 +421,9 @@ def generalincident_report(request):
     return render(request, 'generalincidentform.html') 
 
 
+
+@never_cache
+@session_required('admin_login')
 def admingeneralincident_report(request):
     if request.method == 'POST':
         data = request.POST
@@ -430,6 +483,8 @@ def admingeneralincident_report(request):
 
 
 
+@never_cache
+@session_required('user_login')
 def assistancecall_report(request):
     if request.method == 'POST':
         data = request.POST
@@ -458,6 +513,9 @@ def assistancecall_report(request):
 
 
 
+
+@never_cache
+@session_required('admin_login')
 def adminassistancecall_report(request):
     if request.method == 'POST':
         data = request.POST
@@ -485,7 +543,8 @@ def adminassistancecall_report(request):
     return render(request, 'adminassistcalls.html') 
 
 
-
+@never_cache
+@session_required('user_login')
 def case_detail(request, model_type, case_id):
     if 'username' not in request.session:
         return redirect('user_login')
@@ -510,7 +569,8 @@ def case_detail(request, model_type, case_id):
     return render(request, 'case_detail.html', context)
 
 
-
+@never_cache
+@session_required('admin_login')
 def admincase_detail(request, model_type, case_id):
     if 'username' not in request.session:
         return redirect('admin_login')
@@ -535,7 +595,8 @@ def admincase_detail(request, model_type, case_id):
     return render(request, 'admincase_detail.html', context)
 
 
-
+@never_cache
+@session_required('admin_login')
 def adminviewreport(request):
     qs_fire = list(firewater.objects.all())
     qs_general = list(generalIncident.objects.all())
@@ -596,6 +657,8 @@ def clean_time(value):
             except Exception:
                 return ""  # fallback for invalid
 
+
+@never_cache
 def edit_case(request, model_type, case_id):
     if 'username' not in request.session:
         return redirect('admin_login')
@@ -632,7 +695,7 @@ def edit_case(request, model_type, case_id):
 
 
 
-
+@never_cache
 def delete_case(request, model_type, case_id):
     if 'username' not in request.session:
         return redirect('admin_login')
@@ -660,7 +723,8 @@ from openpyxl.utils import get_column_letter
 from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import redirect
-
+@never_cache
+@session_required('admin_login')
 def download_reports(request):
     if 'username' not in request.session:
         return redirect('admin_login')
@@ -1124,7 +1188,8 @@ def download_reports(request):
 
 
 
-
+@never_cache
+@session_required('admin_login')
 def allcase_detail(request, model_type, case_id):
     if 'username' not in request.session:
         return redirect('admin_login')  # Should redirect to admin_login, not user_login
@@ -1152,7 +1217,8 @@ def allcase_detail(request, model_type, case_id):
 
 
 
-
+@never_cache
+@session_required('admin_login')
 def adminanalytics(request):
     # Get date filters
     month = request.GET.get('month', '')
@@ -1301,7 +1367,8 @@ from openpyxl.utils import get_column_letter
 from django.http import HttpResponse
 from datetime import datetime
 import io
-
+@never_cache
+@session_required('admin_login')
 def download_analytics_csv(request):
     """
     View to download analytics data as professionally formatted Excel file
@@ -1826,7 +1893,8 @@ def download_analytics_csv(request):
 
 
 
-
+@never_cache
+@session_required('admin_login')
 def adminadduser(request):
     # ✅ FIXED: Session check
     if 'username' not in request.session:
@@ -1929,6 +1997,9 @@ def adminadduser(request):
         "all_admins": all_admins,
     })
 
+
+@never_cache
+@session_required('admin_login')
 def deleteuser(request, user_id):
     # ✅ ADDED: Session check
     if 'username' not in request.session:
