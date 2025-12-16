@@ -40,8 +40,8 @@ def contact(request):
 # User login form view
 def user_login(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
 
         try:
             user = userdetails.objects.get(username=username)
@@ -66,8 +66,8 @@ def logout(request):
 
 def admin_login(request):
     if request.method == 'POST':
-        username = request.POST.get('adminusername')
-        password = request.POST.get('adminpassword')
+        username = request.POST.get('adminusername', '').strip()
+        password = request.POST.get('adminpassword', '').strip()
 
         try:
             admin = admindetails.objects.get(adminusername=username)
