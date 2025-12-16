@@ -35,9 +35,8 @@ def about(request):
 def contact(request):
     return render(request, 'contact.html')
 
-
-
 # User login form view
+@never_cache
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username', '').strip()
@@ -63,7 +62,7 @@ def logout(request):
 
 
 
-
+@never_cache
 def admin_login(request):
     if request.method == 'POST':
         username = request.POST.get('adminusername', '').strip()
