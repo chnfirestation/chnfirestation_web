@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="{% static 'ui/css/components.css' %}" />
   <link rel="stylesheet" href="{% static 'ui/css/animations.css' %}" />
   <style>
+
     .toggle-buttons {
       display: flex;
       justify-content: center;
@@ -33,10 +34,42 @@
       background-color: #ef4444;
       color: white;
     }
+      .back-home-arrow {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  font-size: 1.4rem;
+  color: #ef4444;
+  text-decoration: none;
+  background: #ffffff;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  transition: background-color 0.2s, color 0.2s, transform 0.2s;
+  z-index: 10;
+}
+
+.back-home-arrow:hover {
+  background-color: #ef4444;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.login-card {
+  position: relative; /* ensure arrow positions relative to card */
+}
+
   </style>
 </head>
 <body class="login-page">
   <div class="login-container">
+    <a href="{% url 'index' %}" class="back-home-arrow">
+      <i class="fas fa-arrow-left"></i>
+    </a>
     <div class="login-card animate-fade-in">
       <div class="login-header">
         <div class="login-logo">
