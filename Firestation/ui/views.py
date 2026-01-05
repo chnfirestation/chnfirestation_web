@@ -278,7 +278,6 @@ def firewater_report(request):
             animals_rescued = data.get('animals_rescued'),
             animals_lost = data.get('animals_lost'),
             hospital_doctor = data.get('hospital_doctor'),
-            ambulance_notified = data.get('ambulance_notified'),
             appliances_crews = data.get('appliances_crews'),
             officer_in_charge = data.get('officer_in_charge'),
             equipment_used = data.get('equipment_used'),
@@ -341,7 +340,6 @@ def adminfirewater_report(request):
             animals_rescued = data.get('animals_rescued'),
             animals_lost = data.get('animals_lost'),
             hospital_doctor = data.get('hospital_doctor'),
-            ambulance_notified = data.get('ambulance_notified'),
             appliances_crews = data.get('appliances_crews'),
             officer_in_charge = data.get('officer_in_charge'),
             equipment_used = data.get('equipment_used'),
@@ -402,7 +400,6 @@ def generalincident_report(request):
             animals_rescued = data.get('animals_rescued'),
             animals_lost = data.get('animals_lost'),
             hospital_doctor = data.get('hospital_doctor'),
-            ambulance_notified = data.get('ambulance_notified'),
             appliances_crews = data.get('appliances_crews'),
             officer_in_charge = data.get('officer_in_charge'),
             equipment_used = data.get('equipment_used'),
@@ -463,7 +460,6 @@ def admingeneralincident_report(request):
             animals_rescued = data.get('animals_rescued'),
             animals_lost = data.get('animals_lost'),
             hospital_doctor = data.get('hospital_doctor'),
-            ambulance_notified = data.get('ambulance_notified'),
             appliances_crews = data.get('appliances_crews'),
             officer_in_charge = data.get('officer_in_charge'),
             equipment_used = data.get('equipment_used'),
@@ -672,7 +668,7 @@ def edit_case(request, model_type, case_id):
         template = 'edit_assistance.html'
     else:
         return redirect('adminviewreport')
-    time_fields = ["call_received", "time_left_station", "time_reached_scene", "time_returned","ambulance_notified"]
+    time_fields = ["call_received", "time_left_station", "time_reached_scene", "time_returned"]
     if request.method == 'POST':
         # Debug: print for investigation
         print("POST DATA:", dict(request.POST))
@@ -843,7 +839,6 @@ def download_reports(request):
             'date': obj.form_date.strftime('%d-%m-%Y') if obj.form_date else 'N/A',
             'sort_date': obj.form_date if obj.form_date else datetime.min.date(),
             'data': {
-                'userName': obj.userName,
                 'incident': getattr(obj, 'incident', 'N/A'),
                 'call_number': getattr(obj, 'call_number', 'N/A'),
                 'call_received': getattr(obj, 'call_received', 'N/A'),
@@ -881,7 +876,6 @@ def download_reports(request):
                 'animals_rescued': getattr(obj, 'animals_rescued', 'N/A'),
                 'animals_lost': getattr(obj, 'animals_lost', 'N/A'),
                 'hospital_doctor': getattr(obj, 'hospital_doctor', 'N/A'),
-                'ambulance_notified': getattr(obj, 'ambulance_notified', 'N/A'),
                 'appliances_crews': getattr(obj, 'appliances_crews', 'N/A'),
                 'officer_in_charge': getattr(obj, 'officer_in_charge', 'N/A'),
                 'equipment_used': getattr(obj, 'equipment_used', 'N/A'),
@@ -903,7 +897,6 @@ def download_reports(request):
             'date': obj.form_date.strftime('%d-%m-%Y') if obj.form_date else 'N/A',
             'sort_date': obj.form_date if obj.form_date else datetime.min.date(),
             'data': {
-                'userName': obj.userName,
                 'incident': getattr(obj, 'incident', 'N/A'),
                 'call_number': getattr(obj, 'call_number', 'N/A'),
                 'call_received': getattr(obj, 'call_received', 'N/A'),
@@ -941,7 +934,6 @@ def download_reports(request):
                 'animals_rescued': getattr(obj, 'animals_rescued', 'N/A'),
                 'animals_lost': getattr(obj, 'animals_lost', 'N/A'),
                 'hospital_doctor': getattr(obj, 'hospital_doctor', 'N/A'),
-                'ambulance_notified': getattr(obj, 'ambulance_notified', 'N/A'),
                 'appliances_crews': getattr(obj, 'appliances_crews', 'N/A'),
                 'officer_in_charge': getattr(obj, 'officer_in_charge', 'N/A'),
                 'equipment_used': getattr(obj, 'equipment_used', 'N/A'),
@@ -963,7 +955,6 @@ def download_reports(request):
             'date': obj.form_date.strftime('%d-%m-%Y') if obj.form_date else 'N/A',
             'sort_date': obj.form_date if obj.form_date else datetime.min.date(),
             'data': {
-                'userName': obj.userName,
                 'incident': getattr(obj, 'incident_type', 'N/A'),
                 'call_number': getattr(obj, 'call_number', 'N/A'),
                 'call_received': getattr(obj, 'call_received', 'N/A'),
@@ -1001,7 +992,6 @@ def download_reports(request):
                 'animals_rescued': '',
                 'animals_lost': '',
                 'hospital_doctor': '',
-                'ambulance_notified': '',
                 'appliances_crews': '',
                 'officer_in_charge': '',
                 'equipment_used': '',
@@ -1070,7 +1060,6 @@ def download_reports(request):
         add_section_header('BASIC INFORMATION')
         add_labeled_row('Report Type', report['type'])
         add_labeled_row('Date of Filling the Form', report['date'])
-        add_labeled_row('Name of the User', report['data']['userName'])
         add_labeled_row('Incident/Type', report['data']['incident'])
         add_labeled_row('Call Number', report['data']['call_number'])
         current_row += 1
@@ -1137,7 +1126,6 @@ def download_reports(request):
         # EMERGENCY RESPONSE SECTION
         add_section_header('EMERGENCY RESPONSE')
         add_labeled_row('Hospital / Doctor', report['data']['hospital_doctor'])
-        add_labeled_row('Ambulance / Police Notified Time', report['data']['ambulance_notified'])
         add_labeled_row('Appliances & Crews Attended', report['data']['appliances_crews'])
         add_labeled_row('Officer In Charge', report['data']['officer_in_charge'])
         add_labeled_row('Equipment Used', report['data']['equipment_used'])
